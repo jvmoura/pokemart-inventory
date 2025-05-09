@@ -27,8 +27,25 @@ app.post('/api/products', async (req,res) => {
     }
 })
 
+//Delete product
+app.delete('/api/product/:id', async (req, res) =>{
+    try {
+        const {id} = req.params;
+
+        const product = await Product.findByIdAndDelete(id);
+
+        if(!product) {
+            return res.status(404).json({message: "Produc not found"});
+        }
+
+        res.status(200).json({message: "Product deleted successfully"});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+})
+
 //Connection with MondoDB
-mongoose.connect('mongodb+srv://admin:yvcaurhPQRD0ECDp@backenddb.gxkhzmd.mongodb.net/NodeAPI?retryWrites=true&w=majority&appName=BackendDB')
+mongoose.connect('mongodb+srv://test:oQXmjStLFf1u9zVx@backenddb.gxkhzmd.mongodb.net/NodeAPI?retryWrites=true&w=majority&appName=BackendDB')
 .then(() => {
     console.log('Connected!');
     app.listen(3000, () => {
