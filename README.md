@@ -1,6 +1,6 @@
-# REST API Node.js com Express e MongoDB
+# API Rest de Fichas de Personagens de RPG
 
-Este projeto é uma API REST básica construída com Node.js, Express e MongoDB (via Mongoose).
+Este projeto é uma API REST básica, construída com Node.js, Express e MongoDB (via Mongoose), onde é possível cadastrar, consultar e deletar Raças, Classes e Personagens de RPG.
 
 ## Pré-requisitos
 
@@ -12,20 +12,15 @@ Este projeto é uma API REST básica construída com Node.js, Express e MongoDB 
 Clone o repositório e instale as dependências:
 
 ```bash
-git clone https://seu-repo-aqui.git
+git clone https://seu-repo-aqui.git](https://github.com/jvmoura/rpg-character-sheet)
 cd rest-api
 npm install
 ```
 
-## Variáveis de Ambiente
+## Conexão
 
-Crie um arquivo `.env` na raiz com a string de conexão do MongoDB:
+A URI de um banco no Mongo, feito exclusivamente para esse projeto, já foi deixada no código para facilitar
 
-```env
-MONGODB_URI=mongodb://localhost:27017/nome-do-banco
-```
-
-> **Nota:** Verifique no código se há uma variável `MONGODB_URI` sendo usada para configurar a conexão.
 
 ## Scripts
 
@@ -34,24 +29,16 @@ MONGODB_URI=mongodb://localhost:27017/nome-do-banco
 
 ## Uso
 
-Com o servidor rodando, acesse os endpoints via `http://localhost:3000` (ou a porta definida).
+Com o servidor rodando, acesse os endpoints via `http://localhost:3000`
 
 Exemplo:
 
 ```bash
-curl http://localhost:3000/api/usuarios
+http://localhost:3000/api/characters
+curl http://localhost:3000/api/roles
+curl http://localhost:3000/api/races
 ```
 
 ## Estrutura do Projeto
 
-```
-rest-api/
-├── index.js            # Ponto de entrada da API
-├── package.json        # Definições e dependências
-├── jsconfig.json       # Configuração do editor
-└── ...
-```
-
-## Licença
-
-ISC
+Os arquivos foram separados em pastas de Controller, Models e Routes.
