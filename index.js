@@ -5,6 +5,9 @@ const raceRoute = require("./routes/race.route.js")
 const roleRoute = require("./routes/role.route.js")
 const app = express()
 
+const cors = require('cors');
+app.use(cors());
+
 app.use(express.json());
 
 // Middleware para imprimir as requisições no terminal
@@ -30,3 +33,4 @@ mongoose.connect('mongodb+srv://test:oQXmjStLFf1u9zVx@backenddb.gxkhzmd.mongodb.
 .catch(() => {
     console.log("Connection Failed")
 });
+

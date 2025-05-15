@@ -12,7 +12,7 @@ const CharacterSchema = mongoose.Schema(
       required: [true, "Please enter character race"],
     },
 
-    class: {
+    role: {
       type: String, ref:'Role',
       required: [true, "Please enter character class name"],
     },

@@ -4,7 +4,6 @@ const Character = require("../models/character.model");
 const getCharacters = async (req, res) => {
     try {
         const character = await Character.find()
-        .populate('race');
         res.status(200).json(character);
     } catch (error) {
         res.status(500).json({message: error.message});

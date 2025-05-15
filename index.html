@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Personagens</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    input,
+    button {
+      margin: 5px 0;
+      padding: 5px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    li {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="">
+    <h1>Personagens</h1>
+
+    <h2>Adicionar Personagem</h2>
+    <input type="text" id="name" placeholder="Nome do personagem" />
+    <select id="race">
+      <option value="">Selecione uma raça</option>
+    </select>
+    <select id="role">
+      <option value="">Selecione uma classe</option>
+    </select>
+    <input type="number" id="level" placeholder="Level" />
+    <button onclick="addCharacter()">Adicionar</button>
+
+    <h2>Lista de Personagens</h2>
+    <ul id="character-list"></ul>
+
+    <script>
+
+      const apiUrl = "http://localhost:3000/api/characters";
+
+      async function fetchCharacters() {
+        const res = await fetch(apiUrl);
+        const characters = await res.json();
+
+        const list = document.getElementById("character-list");
+        list.innerHTML = "";
+        characters.forEach((char) => {
+          const li = document.createElement("li");
+          li.textContent = `${char.name} - ${char.race} - ${char.role} - ${char.level}`;
+          list.appendChild(li);
+        });
+      }
+
+      async function addCharacter() {
+        const name = document.getElementById("name").value;
+        const race = document.getElementById("race").value; // ObjectId
+        const role = document.getElementById("role").value; // ObjectId
+        const level = parseInt(document.getElementById("level").value);
+
+        if (!name || !race || !role || isNaN(level)) {
+          alert("Preencha todos os campos corretamente!");
+          return;
+        }
+
+        const payload = { name, race, role, level };
+        console.log("Payload being sent:", payload);
+
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            throw new Error(`Erro: ${response.status} - ${response.statusText}`);
+          }
+
+          document.getElementById("name").value = "";
+          document.getElementById("race").value = "";
+          document.getElementById("role").value = "";
+          document.getElementById("level").value = "";
+          fetchCharacters(); // Updates the list
+        } catch (error) {
+          console.error("Erro ao adicionar personagem:", error);
+          alert("Erro ao adicionar personagem. Verifique o console para mais detalhes.");
+        }
+      }
+
+      async function fetchOptions() {
+        try {
+          // Fetch races
+          const raceRes = await fetch("http://localhost:3000/api/races");
+          const races = await raceRes.json();
+          const raceSelect = document.getElementById("race");
+          races.forEach((race) => {
+            const option = document.createElement("option");
+            option.value = race._id; // Use the ObjectId as the value
+            option.textContent = race.name; // Display the race name
+            raceSelect.appendChild(option);
+          });
+
+          // Fetch roles
+          const roleRes = await fetch("http://localhost:3000/api/roles");
+          const roles = await roleRes.json();
+          const roleSelect = document.getElementById("role");
+          roles.forEach((role) => {
+            const option = document.createElement("option");
+            option.value = role._id; // Use the ObjectId as the value
+            option.textContent = role.name; // Display the role name
+            roleSelect.appendChild(option);
+          });
+        } catch (error) {
+          console.error("Erro ao buscar opções:", error);
+        }
+      }
+
+      // Loads the list
+      fetchCharacters();
+      fetchOptions();
+    </script>
+    <script src="index.js"></script>
+  </div>
+</body>
+
+</html>
